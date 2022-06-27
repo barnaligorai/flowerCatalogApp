@@ -1,12 +1,5 @@
 const fs = require('fs');
-const fetchComments = require('./handleComment.js').fetchComments;
-
-const serveGuestBook = (response) => {
-  const comments = fetchComments();
-  const fileContent = fs.readFileSync('./public/guestbook.html', 'utf8');
-  console.log(comments, fileContent);
-  response.send(fileContent);
-};
+const { serveGuestBook } = require('./serveGuestBook.js');
 
 const contentType = (fileName) => {
   const contentTypes = {
