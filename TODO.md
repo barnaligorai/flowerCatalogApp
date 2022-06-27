@@ -1,9 +1,13 @@
 ## TODO
 
+  - [ ] Remove hardcode paths
+  - [ ] Remove dependencies
   - [ ] Style the home page
 
 ## DONE
 
+  - [x] Extraxt comments class
+  - [x] Refactor fileHandler
   - [x] Generate guestbook from template
   - [x] Show the comments in guestbook
   - [x] Create guestbook

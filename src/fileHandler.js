@@ -1,6 +1,3 @@
-const fs = require('fs');
-const { serveGuestBook } = require('./serveGuestBook.js');
-
 const contentType = (fileName) => {
   const contentTypes = {
     '.html': 'text/html',
@@ -13,16 +10,14 @@ const contentType = (fileName) => {
   return type ? type : 'text/plain';
 };
 
-const serveFileContent = (response, fileName) => {
-  fs.readFile(fileName, (err, data) => {
-    if (!err) {
-      response.send(data)
-    }
-  });
+const serveFileContent = (response, fileName, { readFile }) => {
+  const fileContent = readFile(fileName);
+  if (fileContent) {
+    response.send(fileContent);
+  }
 };
 
-const fileHandler = (request, response, sourceDir = './public') => {
-  let { uri } = request;
+const fileHandler = ({ uri }, response, comments, fileProcessor, sourceDir) => {
   let fileName = sourceDir + uri;
 
   if (uri === '/') {
@@ -30,13 +25,9 @@ const fileHandler = (request, response, sourceDir = './public') => {
   }
 
   response.setHeader('Content-Type', contentType(fileName));
-  if (uri === '/guestbook.html') {
-    serveGuestBook(response);
-    return true;
-  }
 
-  if (fs.existsSync(fileName)) {
-    serveFileContent(response, fileName);
+  if (fileProcessor.existsSync(fileName)) {
+    serveFileContent(response, fileName, fileProcessor);
     return true;
   }
   return false;
