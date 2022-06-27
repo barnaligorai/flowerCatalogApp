@@ -1,0 +1,46 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  width: 960px;
+ margin: 10px auto;
+}
+
+header > h1 {
+  border-bottom: 1px solid lightgrey;
+  text-align: center;
+  padding: 0.1em;
+}
+
+header > h3 {
+  border-bottom: 1px solid grey;
+  text-align: right;
+  padding: 0.5em;
+  color: orange;
+  font-family: serif;
+}
+
+.body-wrapper {
+margin: 0.5em 0em;
+display: flex;
+justify-content: space-between;
+}
+
+.body-wrapper > figure {
+  width: 80%;
+}
+
+.body-wrapper > figure > div{
+width: 100%;
+overflow: hidden;
+}
+
+.body-wrapper > figure > div> img{
+  width: 100%;
+  border: 1px solid black;
+}
+

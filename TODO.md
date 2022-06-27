@@ -1,10 +1,11 @@
 ## TODO
 
-  - [ ] Home page
+  - [ ] Create server to open home page
+  - [ ] Style the home page
   - [ ] A flower page
   - [ ] Create guestbook
-  - [ ] Create server to open home page
   - [ ] Create form for guest book
-  - [ ] Create directory structure
 
 ## DONE
+  - [x] Home page
+  - [x] Create directory structure
