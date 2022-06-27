@@ -1,4 +1,12 @@
 const fs = require('fs');
+const fetchComments = require('./handleComment.js').fetchComments;
+
+const serveGuestBook = (response) => {
+  const comments = fetchComments();
+  const fileContent = fs.readFileSync('./public/guestbook.html', 'utf8');
+  console.log(comments, fileContent);
+  response.send(fileContent);
+};
 
 const contentType = (fileName) => {
   const contentTypes = {
@@ -29,6 +37,11 @@ const fileHandler = (request, response, sourceDir = './public') => {
   }
 
   response.setHeader('Content-Type', contentType(fileName));
+  if (uri === '/guestbook.html') {
+    serveGuestBook(response);
+    return true;
+  }
+
   if (fs.existsSync(fileName)) {
     serveFileContent(response, fileName);
     return true;
@@ -36,4 +49,4 @@ const fileHandler = (request, response, sourceDir = './public') => {
   return false;
 };
 
-module.exports = { fileHandler };
+module.exports = { fileHandler, serveFileContent };

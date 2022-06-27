@@ -3,7 +3,7 @@ const { parseRequest } = require('./parseRequest.js');
 const { Response } = require('./response.js');
 const { fileHandler } = require('./fileHandler.js');
 const { handleError } = require('./handleError.js');
-
+const { handleComment } = require('./handleComment.js');
 
 const startServer = (PORT) => {
   const server = createServer(socket => {
@@ -14,9 +14,15 @@ const startServer = (PORT) => {
 
       console.log(new Date().toString(), method, uri, httpVersion);
 
+      if (uri === '/comment') {
+        handleComment(request, response);
+        return;
+      }
+
       if (fileHandler(request, response)) {
         return;
       }
+
       handleError(response);
     });
   });
