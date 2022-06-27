@@ -10,12 +10,6 @@ body {
  margin: 10px auto;
 }
 
-header > h1 {
-  border-bottom: 1px solid lightgrey;
-  text-align: center;
-  padding: 0.1em;
-}
-
 header > h3 {
   border-bottom: 1px solid grey;
   text-align: right;
