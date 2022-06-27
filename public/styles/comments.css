@@ -1,0 +1,8 @@
+.comments > .post{
+margin: 1em 0;
+border-bottom: 1px solid grey;
+}
+
+.comments > .post > div {
+  margin: 0.5em;
+}

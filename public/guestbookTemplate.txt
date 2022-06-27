@@ -2,6 +2,7 @@
   <head>
     <title>guest</title>
     <link rel="stylesheet" href="./styles/form.css">
+    <link rel="stylesheet" href="./styles/comments.css">
   </head>
 
   <body>

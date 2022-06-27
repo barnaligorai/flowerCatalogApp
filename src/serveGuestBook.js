@@ -4,7 +4,7 @@ const formatPost = ({ author, comment, timeStamp }) => {
   const authorBlock = divBlock('author', author);
   const commentBlock = divBlock('comment', comment);
   const timeStampBlock = divBlock('timeStamp', timeStamp);
-  return divBlock('comment', authorBlock + commentBlock + timeStampBlock);
+  return divBlock('post', authorBlock + commentBlock + timeStampBlock);
 };
 
 const serveGuestBook = (response, comments, { readFile }, sourceDir) => {
