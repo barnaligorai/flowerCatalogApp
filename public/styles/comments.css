@@ -1,8 +1,32 @@
 .comments > .post{
 margin: 1em 0;
-border-bottom: 1px solid grey;
+border: 1px solid grey;
+background-color: #f4a36140;
 }
 
 .comments > .post > div {
-  margin: 0.5em;
+  padding: 0.5em;
+}
+
+.content{
+  display: flex;
+  align-items: center;
+  column-gap: 1em;
+}
+
+.author {
+  width: 20%;
+  color: #e76f51;
+}
+
+.comment{
+  color: #2a9d8f;
+  width: 80%;
+  border: 1px solid #62706e7b ;
+  padding: 1em;
+}
+
+.timeStamp{
+  color: #264653;
+  border-bottom: 1px solid #2a9d8f;
 }

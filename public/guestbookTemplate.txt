@@ -5,31 +5,33 @@
     <link rel="stylesheet" href="./styles/comments.css">
   </head>
 
-  <body>
-    <header>
-      <h1>
-        <a href="./home.html">&lt;&lt;</a>
-        <span>Guest Book</span>
-      </h1>
-    </header>
-    <div class="form">
-      <h2>Leave a comment</h2>
-      <form action="comment" method="get">
-        <div class="field">
-          <label for="name">Name : </label>
-          <input type="text" name="name" id="">
-        </div>
-        <div class="field">
-          <label for="comment">Comment : </label>
-          <textarea name="comment" id="" cols="30" rows="5"></textarea>
-        </div>
-        <div class="field">
-          <input type="submit" value="Submit">
-        </div>
-      </form>
+  <body><div class="body-wrapper">
+    
+      <header>
+        <h1>
+          <a href="./home.html">&lt;&lt;</a>
+          <span>Guest Book</span>
+        </h1>
+      </header>
+      <div class="form">
+        <h2>Leave a comment</h2>
+        <form action="comment" method="get">
+          <div class="field">
+            <label for="name" >Name :</label>
+            <input type="text" name="name" id="name">
+          </div>
+          <div class="field">
+            <label for="comment">Comment :</label>
+            <textarea name="comment" id="" cols="47" rows="5"></textarea>
+          </div>
+          <div class="submit">
+            <input type="submit" value="Submit" id="submit">
+          </div>
+        </form>
+      </div>
       <div class="comments">
         __COMMENTS__
       </div>
-    </div>
+  </div>
   </body>
 </html>

@@ -2,7 +2,7 @@ body {
   font-family: serif;
   font-size: 16px;
   line-height: 1em;
-  width: 960px;
+  width: 600px;
   margin: 10px auto;
 }
 
@@ -12,7 +12,12 @@ label {
 
 #submit{
   margin: 20px;
-  width: 400px;
+  width: 100px;
+}
+
+.submit{
+ display: flex;
+ justify-content: center;  
 }
 
 header {
@@ -20,7 +25,12 @@ header {
   color: orange;
 }
 
-.form > form{
+.form {
+  padding: 1em 1em;
+  background-color: #e9c56a4e;
+}
+
+form{
   padding: 10px 0;
   display: flex;
   flex-direction: column;
@@ -32,4 +42,17 @@ header {
   border-bottom: 1px solid black;
   text-align: center;
   padding: 0.5em 0;
+  color: #2a9d8f;
+}
+
+form > .field{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #264653;
+  font-weight: 800;
+}
+
+#name {
+  width: 70%;
 }

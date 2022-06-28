@@ -1,6 +1,10 @@
 const { serveGuestBook } = require('./serveGuestBook.js');
 
-const timeStamp = () => new Date().toString();
+const timeStamp = () => {
+  const dateString = new Date().toLocaleString();
+  const [date, time] = dateString.split(',');
+  return date + time;
+};
 
 const updateDatabase = (comments, { writeFile }, sourceDir) => {
   const commentsJson = JSON.stringify(comments.getComments());

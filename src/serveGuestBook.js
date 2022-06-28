@@ -1,10 +1,11 @@
 const divBlock = (divClass, body) => `<div class="${divClass}">${body}</div>`;
 
 const formatPost = ({ author, comment, timeStamp }) => {
-  const authorBlock = divBlock('author', author);
+  const authorBlock = divBlock('author', `${author} : `);
   const commentBlock = divBlock('comment', comment);
   const timeStampBlock = divBlock('timeStamp', timeStamp);
-  return divBlock('post', authorBlock + commentBlock + timeStampBlock);
+  const contentBlock = divBlock('content', authorBlock + commentBlock);
+  return divBlock('post', timeStampBlock + contentBlock);
 };
 
 const serveGuestBook = (response, comments, { readFile }, sourceDir) => {

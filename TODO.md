@@ -1,11 +1,13 @@
 ## TODO
 
+  - [ ] Parse the new line of the comments
   - [ ] Remove hardcode paths
   - [ ] Remove dependencies
   - [ ] Style the home page
 
 ## DONE
 
+  - [x] Style the guestbook page --- added minimal styling
   - [x] Extraxt comments class
   - [x] Refactor fileHandler
   - [x] Generate guestbook from template
