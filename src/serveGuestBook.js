@@ -1,8 +1,16 @@
+const EOL = '\r\n';
+const pageBreak = '<br/>';
+
 const divBlock = (divClass, body) => `<div class="${divClass}">${body}</div>`;
+
+const parseComment = (commentsString) => {
+  const comments = commentsString.split(EOL);
+  return comments.join(pageBreak);
+};
 
 const formatPost = ({ author, comment, timeStamp }) => {
   const authorBlock = divBlock('author', `${author} : `);
-  const commentBlock = divBlock('comment', comment);
+  const commentBlock = divBlock('comment', parseComment(comment));
   const timeStampBlock = divBlock('timeStamp', timeStamp);
   const contentBlock = divBlock('content', authorBlock + commentBlock);
   return divBlock('post', timeStampBlock + contentBlock);
