@@ -1,12 +1,13 @@
 ## TODO
 
-  - [ ] Use package.json
   - [ ] Load the files first
   - [ ] Remove dependencies
   - [ ] Style the home page
 
 ## DONE
 
+  - [x] Use package.json
+  - [x] Implement guestbook
   - [x] Implement http server
   - [x] Consider directory structure
   - [x] Use closure for fileHandler
