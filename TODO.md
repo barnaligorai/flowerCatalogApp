@@ -1,19 +1,19 @@
 ## TODO
 
-  - [ ] Make the contracts consistence
-  - [ ] Implement http server
-  - [ ] Consider directory structure
-  - [ ] Use closure for fileHandler
   - [ ] Use package.json
-  - [ ] Use path module
-  - [ ] Make all the handler's contract consistence
   - [ ] Load the files first
-  - [ ] Remove hardcode paths
   - [ ] Remove dependencies
   - [ ] Style the home page
 
 ## DONE
 
+  - [x] Implement http server
+  - [x] Consider directory structure
+  - [x] Use closure for fileHandler
+  - [x] Use path module
+  - [x] Make all the handler's contract consistence
+  - [x] Remove hardcoded paths
+  - [x] Make the contracts consistence
   - [x] Use closure for commentHandler
   - [x] Use unshift instead of push for storing comments
   - [x] Parse the new line of the comments
