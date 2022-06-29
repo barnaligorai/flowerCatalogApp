@@ -16,6 +16,12 @@ const mimeType = (fileName) => {
   return mimeTypes[extension] || 'text/plain';
 };
 
+const setContentTypeHeader = (response, fileName) =>
+  response.setHeader('Content-Type', mimeType(fileName));
+
+const setStatusCode = (response, code) =>
+  response.statusCode = code;
+
 const fileHandler = (sourceDir) => (request, response) => {
   const { pathname } = request.url;
   let fileName = sourceDir + pathname;
@@ -25,8 +31,8 @@ const fileHandler = (sourceDir) => (request, response) => {
 
   try {
     const content = fs.readFileSync(fileName);
-    response.setHeader('Content-Type', mimeType(fileName));
-    response.statusCode = 200;
+    setContentTypeHeader(response, fileName);
+    setStatusCode(response, 200);
     response.end(content);
   } catch (error) {
     return false;

@@ -22,7 +22,7 @@ const generateCommentsBlock = (comments) => {
   return commentsHtml.join('');
 };
 
-class Comments {
+class GuestBook {
   #comments;
   #sourceFile;
   constructor(comments, sourceFile) {
@@ -47,4 +47,4 @@ class Comments {
   }
 }
 
-module.exports = { Comments };
+module.exports = { GuestBook };

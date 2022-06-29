@@ -4,10 +4,10 @@ const { notFound } = require('./handlers/notFound.js');
 
 const app = (sourceDir = './public', resourceDir = './resource') => {
   const handlers = [fileHandler(sourceDir), guestBookHandler(resourceDir), notFound];
-  return createHandler(handlers);
+  return createRouter(handlers);
 };
 
-const createHandler = (handlers) => {
+const createRouter = (handlers) => {
   return (request, response) => {
     for (const handler of handlers)
       if (handler(request, response))
@@ -15,4 +15,4 @@ const createHandler = (handlers) => {
   }
 };
 
-module.exports = { createHandler, app };
+module.exports = { app };

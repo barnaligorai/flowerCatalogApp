@@ -14,7 +14,7 @@ const parseSearchParams = (searchParams) => {
 };
 
 const addComment = ({ guestbook, url }) => {
-  const searchParams = url.searchParams;
+  const { searchParams } = url;
   const { name, comment } = parseSearchParams(searchParams);
   const post = { name, comment, timeStamp: timeStamp() };
   guestbook.add(post);

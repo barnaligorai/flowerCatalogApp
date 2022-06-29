@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { Comments } = require('./comments.js');
+const { GuestBook } = require('./guestBook.js');
 const { handleComment } = require('./handleComment.js');
 
 const readFile = (fileName) => {
@@ -9,7 +9,7 @@ const readFile = (fileName) => {
 const fetchComments = (sourceDir) => {
   const fileName = sourceDir + '/comments.json';
   const comments = JSON.parse(readFile(fileName));
-  return new Comments(comments, fileName);
+  return new GuestBook(comments, fileName);
 };
 
 const readTemplate = (sourceDir) => {
@@ -17,7 +17,7 @@ const readTemplate = (sourceDir) => {
   return readFile(fileName);
 };
 
-const generateGuestBook = (template, comments) => {
+const generateGuestBookHtml = (template, comments) => {
   return template.replace('__COMMENTS__', comments.toHtml());
 };
 
@@ -32,7 +32,7 @@ const guestBookHandler = sourceDir => {
     }
 
     if (request.matches('GET', '/guestbook.html')) {
-      const content = generateGuestBook(template, guestbook);
+      const content = generateGuestBookHtml(template, guestbook);
       response.statusCode = 200;
       response.setHeader('Content-Type', 'text/html');
       response.end(content);
@@ -40,7 +40,6 @@ const guestBookHandler = sourceDir => {
     }
 
     return false;
-
   };
 };
 
