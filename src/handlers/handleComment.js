@@ -13,24 +13,24 @@ const parseSearchParams = (searchParams) => {
   return queryParams;
 };
 
-const addComment = ({ guestbook, url }) => {
+const addComment = ({ guestBook, url }) => {
   const { searchParams } = url;
   const { name, comment } = parseSearchParams(searchParams);
   const post = { name, comment, timeStamp: timeStamp() };
-  guestbook.add(post);
+  guestBook.add(post);
 };
 
-const updateDatabase = (guestbook) => {
-  const commentsJson = JSON.stringify(guestbook.getComments());
-  const fileName = guestbook.sourceFile;
+const updateDatabase = (guestBook) => {
+  const commentsJson = JSON.stringify(guestBook.getComments());
+  const fileName = guestBook.sourceFile;
   fs.writeFileSync(fileName, commentsJson, 'utf8');
 };
 
 const handleComment = (request, response) => {
   addComment(request);
-  updateDatabase(request.guestbook);
+  updateDatabase(request.guestBook);
 
-  // redirect to guestbook 
+  // redirect to guestBook 
   response.statusCode = 302;
   response.setHeader('location', '/guestbook.html');
   response.end();
