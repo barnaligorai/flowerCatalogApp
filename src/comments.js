@@ -18,8 +18,7 @@ const formatPost = ({ author, comment, timeStamp }) => {
 
 const generateCommentsBlock = (comments) => {
   const commentsHtml = [];
-  const listOfComments = comments.slice(0).reverse();
-  listOfComments.forEach(comment => commentsHtml.push(formatPost(comment)));
+  comments.forEach(comment => commentsHtml.push(formatPost(comment)));
   return commentsHtml.join('');
 };
 
@@ -30,7 +29,7 @@ class Comments {
   }
 
   add(post) {
-    this.#comments.push(post);
+    this.#comments.unshift(post);
   };
 
   getComments() {

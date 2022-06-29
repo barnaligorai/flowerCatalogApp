@@ -17,7 +17,7 @@ const serveFileContent = (response, fileName, { readFile }) => {
   }
 };
 
-const fileHandler = ({ uri }, response, comments, fileProcessor, sourceDir) => {
+const fileHandler = ({ uri }, response, fileProcessor, sourceDir) => {
   let fileName = sourceDir + uri;
 
   if (uri === '/') {

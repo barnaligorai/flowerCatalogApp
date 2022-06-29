@@ -18,26 +18,28 @@ const redirectToGuestPage = (response) => {
   response.send('');
 };
 
-const handleComment = (request, response, comments, fileProcessor, sourceDir) => {
-  const { uri } = request;
-  if (uri === '/guestbook.html') {
-    serveGuestBook(response, comments, fileProcessor, sourceDir);
-    return true;
-  }
-
-  if (uri === '/comment') {
-    const { name, comment } = request.queryParams;
-    let author = name;
-    if (!author) {
-      author = 'Guest'
+const handleComment = (comments) => {
+  return (request, response, fileProcessor, sourceDir) => {
+    const { uri } = request;
+    if (uri === '/guestbook.html') {
+      serveGuestBook(response, comments, fileProcessor, sourceDir);
+      return true;
     }
-    const post = { author, comment, timeStamp: timeStamp() };
-    comments.add(post);
-    updateDatabase(comments, fileProcessor, sourceDir);
-    redirectToGuestPage(response);
-    return true;
-  }
-  return false;
+
+    if (uri === '/comment') {
+      const { name, comment } = request.queryParams;
+      let author = name;
+      if (!author) {
+        author = 'Guest'
+      }
+      const post = { author, comment, timeStamp: timeStamp() };
+      comments.add(post);
+      updateDatabase(comments, fileProcessor, sourceDir);
+      redirectToGuestPage(response);
+      return true;
+    }
+    return false;
+  };
 };
 
 module.exports = { handleComment };
