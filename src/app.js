@@ -1,7 +1,7 @@
 const { fileHandler } = require('./handlers/fileHandler.js');
 const { guestBookHandler } = require('./handlers/guestBookHandler.js');
 const { notFound } = require('./handlers/notFound.js');
-const { handleApiReq } = require('./handlers/handleApiReq.js');
+const { apiRouter } = require('./handlers/apiRouter.js');
 const { GuestBook } = require('./handlers/guestBook.js');
 const fs = require('fs');
 
@@ -21,7 +21,7 @@ const app = (sourceDir = './public', resourceDir = './resource') => {
   const handlers = [
     fileHandler(sourceDir),
     guestBookHandler(guestBook, template),
-    handleApiReq(guestBook),
+    apiRouter(guestBook),
     notFound
   ];
   return createRouter(handlers);
