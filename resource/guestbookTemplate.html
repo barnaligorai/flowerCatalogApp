@@ -15,14 +15,14 @@
       </header>
       <div class="form">
         <h2>Leave a comment</h2>
-        <form action="add-comment" method="post">
+        <form action="add-comment" method="POST">
           <div class="field">
             <label for="name" >Name :</label>
-            <input type="text" name="name" id="name">
+            <input type="text" name="name" id="name" required >
           </div>
           <div class="field">
             <label for="comment">Comment :</label>
-            <textarea name="comment" id="" cols="47" rows="5"></textarea>
+            <textarea name="comment" id="" cols="47" rows="5" required></textarea>
           </div>
           <div class="submit">
             <input type="submit" value="Submit" id="submit">

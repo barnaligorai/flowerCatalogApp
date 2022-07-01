@@ -6,6 +6,8 @@
 
 ## DONE
 
+  - [x] Write bodyParser
+  - [x] Implement POST method
   - [x] Use package.json
   - [x] Implement guestbook
   - [x] Implement http server

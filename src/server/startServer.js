@@ -7,7 +7,7 @@ const matches = function (method, path) {
 const startServer = (PORT, handle) => {
   const server = createServer((request, response) => {
     request.url = new URL(`http://${request.headers.host}${request.url}`);
-    console.log(new Date().toString(), request.method, request.url.pathname);
+    console.log(new Date().toLocaleString(), request.method, request.url.pathname);
     request.matches = matches.bind(request);
     handle(request, response);
   });

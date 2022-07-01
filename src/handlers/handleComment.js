@@ -6,16 +6,9 @@ const timeStamp = () => {
   return date + time;
 };
 
-const parseSearchParams = (searchParams) => {
-  const queryParams = {};
-  [...searchParams.entries()].forEach(([key, value]) =>
-    queryParams[key] = value);
-  return queryParams;
-};
-
-const addComment = ({ guestBook, url }) => {
-  const { searchParams } = url;
-  const { name, comment } = parseSearchParams(searchParams);
+const addComment = (request) => {
+  const { guestBook, bodyParams } = request;
+  const { name, comment } = bodyParams;
   const post = { name, comment, timeStamp: timeStamp() };
   guestBook.add(post);
 };
@@ -30,11 +23,10 @@ const handleComment = (request, response) => {
   addComment(request);
   updateDatabase(request.guestBook);
 
-  // redirect to guestBook 
+  // redirect to guestBook
   response.statusCode = 302;
   response.setHeader('location', '/guestbook.html');
   response.end();
-  return true;
 };
 
 module.exports = { handleComment };

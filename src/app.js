@@ -1,8 +1,10 @@
+const { postCommentHandler } = require('./handlers/postCommentHandler.js');
 const { fileHandler } = require('./handlers/fileHandler.js');
 const { guestBookHandler } = require('./handlers/guestBookHandler.js');
 const { notFound } = require('./handlers/notFound.js');
 const { apiRouter } = require('./handlers/apiRouter.js');
 const { createRouter } = require('./server/createRouter.js');
+const { parseBody } = require('./parseBody.js');
 const { GuestBook } = require('./handlers/guestBook.js');
 const fs = require('fs');
 
@@ -20,9 +22,11 @@ const app = (sourceDir = './public', resourceDir = './resource') => {
   const guestBook = fetchComments(resourceDir);
   const template = readFile(resourceDir + '/guestbookTemplate.html');
   const handlers = [
+    parseBody,
     fileHandler(sourceDir),
     guestBookHandler(guestBook, template),
     apiRouter(guestBook),
+    postCommentHandler(guestBook),
     notFound
   ];
   return createRouter(handlers);
