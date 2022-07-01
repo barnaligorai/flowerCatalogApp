@@ -4,7 +4,6 @@ const serveAllComments = (request, response) => {
   response.statuscode = 200;
   response.setHeader('Content-Type', 'application/json');
   response.end(jsonComments);
-  return true;
 };
 
 const filterComments = (guestBook, user) => {
@@ -15,30 +14,25 @@ const filterComments = (guestBook, user) => {
 
 const serveCommentsOf = (request, response) => {
   const { guestBook, url } = request;
-  const user = url.pathname.split('/')[2];
-  const selectedComments = filterComments(guestBook, user);
+  const name = url.searchParams.get('name');
+  const selectedComments = filterComments(guestBook, name);
 
   response.statuscode = 200;
   response.setHeader('Content-Type', 'application/json');
   response.end(JSON.stringify(selectedComments));
-  return true;
 };
 
 const apiRouter = (guestBook) => {
   return (request, response, next) => {
-    const { pathname } = request.url;
-    if (!pathname.startsWith('/comments')) {
-      next();
-    }
-
-    if (pathname === '/comments/all' || pathname === '/comments') {
+    if (request.matches('GET', '/comments')) {
       request.guestBook = guestBook;
-      return serveAllComments(request, response);
-    }
 
-    if (pathname.startsWith('/comments/')) {
-      request.guestBook = guestBook;
-      return serveCommentsOf(request, response);
+      if (request.url.searchParams.get('name')) {
+        serveCommentsOf(request, response);
+        return;
+      }
+      serveAllComments(request, response);
+      return;
     }
     next();
   };
