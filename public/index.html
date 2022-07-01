@@ -4,6 +4,18 @@
       flower-catalog
     </title>
     <link rel="stylesheet" href="./styles/homepage.css">
+    <script>
+      const hide = (event) => {
+        const element = document.getElementById('gif');
+        element.style.visibility = 'hidden';
+        setTimeout(()=>{
+          element.style.visibility = '';
+        },2000);
+      };
+      window.onload=()=>{
+        document.getElementById('gif').addEventListener('click', (event) => hide(event))
+    };
+    </script>
   </head>
   <body>
     <header>
@@ -27,7 +39,7 @@
           </ul>
         </nav>
         <figure>
-          <img src="./images/animated-flower-image-0021.gif" alt="flowering-jug">
+          <img src="./images/animated-flower-image-0021.gif" alt="flowering-jug" id="gif">
         </figure>
         <p><a href="./guestbook.html">Guest Book</a></p>
       </div>
