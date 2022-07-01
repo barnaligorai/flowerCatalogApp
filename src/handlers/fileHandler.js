@@ -22,22 +22,20 @@ const setContentTypeHeader = (response, fileName) =>
 const setStatusCode = (response, code) =>
   response.statusCode = code;
 
-const fileHandler = (sourceDir) => (request, response) => {
+const fileHandler = (sourceDir) => (request, response, next) => {
   const { pathname } = request.url;
   let fileName = sourceDir + pathname;
   if (pathname === '/') {
     fileName = fileName + 'index.html';
   }
-
   try {
     const content = fs.readFileSync(fileName);
     setContentTypeHeader(response, fileName);
     setStatusCode(response, 200);
     response.end(content);
   } catch (error) {
-    return false;
+    next();
   }
-  return true;
 };
 
 module.exports = { fileHandler };

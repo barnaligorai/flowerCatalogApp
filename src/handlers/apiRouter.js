@@ -25,10 +25,10 @@ const serveCommentsOf = (request, response) => {
 };
 
 const apiRouter = (guestBook) => {
-  return (request, response) => {
+  return (request, response, next) => {
     const { pathname } = request.url;
     if (!pathname.startsWith('/comments')) {
-      return false;
+      next();
     }
 
     if (pathname === '/comments/all' || pathname === '/comments') {
@@ -40,7 +40,7 @@ const apiRouter = (guestBook) => {
       request.guestBook = guestBook;
       return serveCommentsOf(request, response);
     }
-    return false;
+    next();
   };
 };
 

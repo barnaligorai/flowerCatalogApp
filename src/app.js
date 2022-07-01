@@ -2,6 +2,7 @@ const { fileHandler } = require('./handlers/fileHandler.js');
 const { guestBookHandler } = require('./handlers/guestBookHandler.js');
 const { notFound } = require('./handlers/notFound.js');
 const { apiRouter } = require('./handlers/apiRouter.js');
+const { createRouter } = require('./server/createRouter.js');
 const { GuestBook } = require('./handlers/guestBook.js');
 const fs = require('fs');
 
@@ -17,7 +18,7 @@ const fetchComments = (sourceDir) => {
 
 const app = (sourceDir = './public', resourceDir = './resource') => {
   const guestBook = fetchComments(resourceDir);
-  const template = readFile(resourceDir + '/guestbookTemplate.txt');
+  const template = readFile(resourceDir + '/guestbookTemplate.html');
   const handlers = [
     fileHandler(sourceDir),
     guestBookHandler(guestBook, template),
@@ -25,14 +26,6 @@ const app = (sourceDir = './public', resourceDir = './resource') => {
     notFound
   ];
   return createRouter(handlers);
-};
-
-const createRouter = (handlers) => {
-  return (request, response) => {
-    for (const handler of handlers)
-      if (handler(request, response))
-        return;
-  }
 };
 
 module.exports = { app };

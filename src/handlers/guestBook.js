@@ -18,7 +18,10 @@ const generateCommentBlock = ({ name, comment, timeStamp }) => {
 
 const generateCommentsBlock = (comments) => {
   const commentsHtml = [];
-  comments.forEach(comment => commentsHtml.push(generateCommentBlock(comment)));
+  comments.forEach(comment => {
+    commentsHtml.push(generateCommentBlock(comment))
+  }
+  );
   return commentsHtml.join('');
 };
 
