@@ -5,8 +5,11 @@ const { notFound } = require('./handlers/notFound.js');
 const { apiRouter } = require('./handlers/apiRouter.js');
 const { createRouter } = require('./server/createRouter.js');
 const { parseBody } = require('./server/parseBody.js');
+const { parseCookies } = require('./server/parseCookies.js');
+const { loginHandler } = require('./handlers/loginHandler.js');
 const { GuestBook } = require('./handlers/guestBook.js');
 const fs = require('fs');
+const { injectSessions } = require('./server/injectSessions.js');
 
 const readFile = (fileName) => {
   return fs.readFileSync(fileName, 'utf8');
@@ -23,6 +26,9 @@ const app = (sourceDir = './public', resourceDir = './resource') => {
   const template = readFile(resourceDir + '/guestbookTemplate.html');
   const handlers = [
     parseBody,
+    parseCookies,
+    injectSessions,
+    loginHandler,
     guestBookHandler(guestBook, template),
     fileHandler(sourceDir),
     apiRouter(guestBook),

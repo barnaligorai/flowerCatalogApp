@@ -3,7 +3,6 @@ const createNext = handlers => {
   const callNextHandler = (req, res) => {
     index++;
     const currentHandler = handlers[index];
-    // console.log(index);
     if (currentHandler) {
       currentHandler(req, res, () => callNextHandler(req, res));
     }
