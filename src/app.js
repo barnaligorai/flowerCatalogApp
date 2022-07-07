@@ -10,6 +10,7 @@ const { loginHandler } = require('./handlers/loginHandler.js');
 const { GuestBook } = require('./handlers/guestBook.js');
 const fs = require('fs');
 const { injectSessions } = require('./server/injectSessions.js');
+const { registrationHandler } = require('./handlers/registrationHandler.js');
 
 const readFile = (fileName) => {
   return fs.readFileSync(fileName, 'utf8');
@@ -29,6 +30,7 @@ const app = (sourceDir = './public', resourceDir = './resource') => {
     parseCookies,
     injectSessions,
     loginHandler,
+    registrationHandler,
     guestBookHandler(guestBook, template),
     fileHandler(sourceDir),
     apiRouter(guestBook),
