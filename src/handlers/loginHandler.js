@@ -1,4 +1,14 @@
-const loginHandler = sessions =>
+const isUserValid = (users, username) =>
+  users.some(user => user === username);
+
+const redirectTo = (res, path) => {
+  res.statusCode = 302;
+  res.setHeader('location', path);
+  res.end();
+  return;
+};
+
+const loginHandler = (sessions, users) =>
   (req, res, next) => {
     if (req.url.pathname !== '/login') {
       next();
@@ -15,11 +25,14 @@ const loginHandler = sessions =>
     // add cookie and session and redirect to homepage
     const username = req.bodyParams.username;
     if (username && req.method === 'POST') {
+      if (!isUserValid(users, username)) {
+        redirectTo(res, '/register');
+        return;
+      }
+
       const sessionId = sessions.add(username);
       res.setHeader('Set-Cookie', 'sessionId = ' + sessionId);
-      res.statusCode = 302;
-      res.setHeader('location', '/guestbook.html');
-      res.end();
+      redirectTo(res, '/guestbook.html');
       return;
     }
 

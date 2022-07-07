@@ -1,26 +1,40 @@
-const registrationHandler = (req, res, next) => {
-  if (req.url.pathname !== '/register') {
-    next();
-    return;
-  }
+const isUserValid = (users, username) =>
+  users.some(user => user === username);
 
-  if (req.currentSession) {
-    res.statusCode = 302;
-    res.setHeader('location', '/guestbook.html');
-    res.end();
-    return;
-  }
-
-  if (req.matches('POST', '/register')) {
-    const sessionId = req.sessions.add(req.bodyParams.username);
-    res.statusCode = 302;
-    res.setHeader('location', '/login');
-    res.end();
-    return;
-  }
-
-  req.url.pathname = '/register.html';
-  next();
+const redirectTo = (res, path) => {
+  res.statusCode = 302;
+  res.setHeader('location', path);
+  res.end();
+  return;
 };
+
+const registrationHandler = users =>
+  (req, res, next) => {
+    if (req.url.pathname !== '/register') {
+      next();
+      return;
+    }
+
+    if (req.currentSession) {
+      redirectTo(res, '/guestbook.html');
+      return;
+    }
+
+    const username = req.bodyParams.username;
+    if (req.matches('POST', '/register')) {
+      if (isUserValid(users, username)) {
+        redirectTo(res, '/login');
+        return;
+      }
+
+      users.push(username);
+
+      redirectTo(res, '/login')
+      return;
+    }
+
+    req.url.pathname = '/register.html';
+    next();
+  };
 
 module.exports = { registrationHandler };

@@ -25,14 +25,15 @@ const fetchComments = (sourceDir) => {
 
 const app = (sourceDir = './public', resourceDir = './resource') => {
   const sessions = new Sessions();
+  const users = [];
   const guestBook = fetchComments(resourceDir);
   const template = readFile(resourceDir + '/guestbookTemplate.html');
   const handlers = [
     parseBody,
     injectCookies,
     injectSessions(sessions),
-    loginHandler(sessions),
-    registrationHandler,
+    loginHandler(sessions, users),
+    registrationHandler(users),
     guestBookHandler(guestBook, template),
     fileHandler(sourceDir),
     apiRouter(guestBook),
