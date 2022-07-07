@@ -7,8 +7,9 @@ const timeStamp = () => {
 };
 
 const addComment = (request) => {
-  const { guestBook, bodyParams } = request;
-  const { name, comment } = bodyParams;
+  const { guestBook, bodyParams, currentSession } = request;
+  const { comment } = bodyParams;
+  const name = currentSession.username;
   const post = { name, comment, timeStamp: timeStamp() };
   guestBook.add(post);
 };

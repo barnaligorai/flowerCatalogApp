@@ -9,7 +9,7 @@ const { injectCookies } = require('./server/injectCookies.js');
 const { loginHandler } = require('./handlers/loginHandler.js');
 const { GuestBook } = require('./handlers/guestBook.js');
 const fs = require('fs');
-const { injectSessions } = require('./server/injectSessions.js');
+const { injectSession } = require('./server/injectSession.js');
 const { registrationHandler } = require('./handlers/registrationHandler.js');
 const { Sessions } = require('./sessions.js');
 const { logoutHandler } = require('./handlers/logoutHandler.js');
@@ -32,7 +32,7 @@ const app = (sourceDir = './public', resourceDir = './resource') => {
   const handlers = [
     parseBody,
     injectCookies,
-    injectSessions(sessions),
+    injectSession(sessions),
     registrationHandler(users),
     loginHandler(sessions, users),
     logoutHandler(sessions),

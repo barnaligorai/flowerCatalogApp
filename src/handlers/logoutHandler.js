@@ -5,7 +5,6 @@ const logoutHandler = sessions =>
       return;
     }
 
-
     if (req.currentSession) {
       const sessionId = req.currentSession.sessionId;
       sessions.delete(sessionId);

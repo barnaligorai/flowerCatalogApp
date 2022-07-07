@@ -30,3 +30,7 @@ background-color: #f4a36140;
   color: #264653;
   border-bottom: 1px solid #2a9d8f;
 }
+
+#logout-button{
+  text-align: right;
+}

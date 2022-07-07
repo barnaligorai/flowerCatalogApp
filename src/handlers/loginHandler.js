@@ -16,9 +16,7 @@ const loginHandler = (sessions, users) =>
     }
 
     if (req.currentSession) {
-      res.statusCode = 302;
-      res.setHeader('location', '/guestbook.html');
-      res.end();
+      redirectTo(res, '/guestbook.html')
       return;
     }
 
@@ -31,7 +29,7 @@ const loginHandler = (sessions, users) =>
       }
 
       const sessionId = sessions.add(username);
-      res.setHeader('Set-Cookie', 'sessionId = ' + sessionId);
+      res.setHeader('Set-Cookie', `sessionId = ${sessionId}`);
       redirectTo(res, '/guestbook.html');
       return;
     }
