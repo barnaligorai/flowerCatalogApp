@@ -1,4 +1,4 @@
-const parseCookiesString = (cookiesString) => {
+const parseCookies = (cookiesString) => {
   const cookies = {};
 
   if (!cookiesString) {
@@ -12,10 +12,10 @@ const parseCookiesString = (cookiesString) => {
   return cookies;
 };
 
-const parseCookies = (req, res, next) => {
-  const cookies = parseCookiesString(req.headers.cookie);
+const injectCookies = (req, res, next) => {
+  const cookies = parseCookies(req.headers.cookie);
   req.cookies = cookies;
   next();
 };
 
-module.exports = { parseCookies };
+module.exports = { injectCookies };
