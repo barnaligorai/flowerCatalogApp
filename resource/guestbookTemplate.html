@@ -3,6 +3,7 @@
     <title>guest</title>
     <link rel="stylesheet" href="./styles/form.css">
     <link rel="stylesheet" href="./styles/comments.css">
+    <script src="./js/script.js"></script>
   </head>
 
   <body><div class="body-wrapper">
@@ -18,13 +19,13 @@
       </div>
       <div class="form">
         <h2>Leave a comment</h2>
-        <form action="add-comment" method="POST">
+        <form>
           <div class="field">
             <label for="comment">Comment :</label>
             <textarea name="comment" id="" cols="47" rows="5" required></textarea>
           </div>
           <div class="submit">
-            <input type="submit" value="Submit" id="submit">
+            <button id="submit" type="button">add comment</button>
           </div>
         </form>
       </div>

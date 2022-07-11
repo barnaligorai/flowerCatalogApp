@@ -12,6 +12,7 @@ const addComment = (request) => {
   const name = currentSession.username;
   const post = { name, comment, timeStamp: timeStamp() };
   guestBook.add(post);
+  return post;
 };
 
 const updateDatabase = (guestBook) => {
@@ -21,13 +22,14 @@ const updateDatabase = (guestBook) => {
 };
 
 const handleComment = (request, response) => {
-  addComment(request);
+  const comment = addComment(request);
   updateDatabase(request.guestBook);
 
   // redirect to guestBook
-  response.statusCode = 302;
-  response.setHeader('location', '/guestbook.html');
-  response.end();
+  // response.statusCode = 302;
+  // response.setHeader('location', '/guestbook.html');
+  response.setHeader('content-type', 'application/json');
+  response.end(JSON.stringify(comment));
 };
 
 module.exports = { handleComment };

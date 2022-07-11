@@ -29,7 +29,7 @@ const registrationHandler = users =>
 
       users.push(username);
 
-      redirectTo(res, '/login')
+      redirectTo(res, '/login');
       return;
     }
 
