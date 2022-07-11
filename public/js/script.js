@@ -31,7 +31,7 @@ const sendRequest = ({ method, url, body = '' }, callBack) => {
   xhr.send(body);
 };
 
-const addComment = (lastId) => {
+const postComment = (callback) => {
   const formElement = document.querySelector('form');
   const formData = new FormData(formElement);
   const commentDetails = new URLSearchParams(formData);
@@ -43,17 +43,21 @@ const addComment = (lastId) => {
       return;
     }
     console.log('added comment', response);
-    const commentsRequest = { method: 'GET', url: `/api/comments?after=${lastId.lastId}` };
-    sendRequest(commentsRequest, (xhr) => prependComments(xhr, lastId));
+    callback();
   });
 
   formElement.reset();
 };
 
+const fetchComments = (lastId) => {
+  const commentsRequest = { method: 'GET', url: `/api/comments?after=${lastId.lastId}` };
+  sendRequest(commentsRequest, (xhr) => prependComments(xhr, lastId));
+};
+
 const initPost = ({ response }) => {
   const lastId = JSON.parse(response);
   const buttonElement = document.querySelector('#submit');
-  buttonElement.onclick = () => addComment(lastId);
+  buttonElement.onclick = () => postComment(() => fetchComments(lastId));
 };
 
 const main = () => {
