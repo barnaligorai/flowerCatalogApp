@@ -1,7 +1,7 @@
 const EOL = '\r\n';
 const pageBreak = '<br/>';
 
-const divBlock = (divClass, body) => `<div class="${divClass}">${body}</div>`;
+const divBlock = (divClass, body = '') => `<div class="${divClass}">${body}</div>`;
 
 const parseComment = (commentsString) => {
   const comments = commentsString.split(EOL);
@@ -9,7 +9,7 @@ const parseComment = (commentsString) => {
 };
 
 const generateCommentBlock = ({ name, comment, timeStamp }) => {
-  const nameBlock = divBlock('name', `${name} : `);
+  const nameBlock = divBlock('name', `${name}`);
   const commentBlock = divBlock('comment', parseComment(comment));
   const timeStampBlock = divBlock('timeStamp', timeStamp);
   const contentBlock = divBlock('content', nameBlock + commentBlock);

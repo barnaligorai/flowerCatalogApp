@@ -19,11 +19,16 @@ const readFile = (fileName) => {
 };
 
 const getLastId = (comments) => {
-  return comments[0].id;
+  return comments[0] ? comments[0].id : 0;
 };
 
 const fetchComments = (sourceDir) => {
   const fileName = sourceDir + '/guestBook.json';
+
+  if (!fs.existsSync(fileName)) {
+    fs.writeFileSync(fileName, JSON.stringify([]), 'utf-8');
+  }
+
   const comments = JSON.parse(readFile(fileName));
   const id = getLastId(comments);
   return new GuestBook(comments, fileName, id);
@@ -31,7 +36,7 @@ const fetchComments = (sourceDir) => {
 
 const app = (sourceDir = './public', resourceDir = './resource') => {
   const sessions = new Sessions();
-  const users = [];
+  const users = ['bani'];
   const guestBook = fetchComments(resourceDir);
   const template = readFile(resourceDir + '/guestbookTemplate.html');
   const handlers = [

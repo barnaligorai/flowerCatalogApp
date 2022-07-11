@@ -15,9 +15,9 @@ const updateDatabase = (guestBook) => {
 };
 
 const handleComment = (request, response) => {
-  addComment(request);
+  const comment = addComment(request);
   updateDatabase(request.guestBook);
-  response.end();
+  response.end(JSON.stringify(comment));
 };
 
 module.exports = { handleComment };
