@@ -22,19 +22,49 @@ const serveCommentsOf = (request, response) => {
   response.end(JSON.stringify(selectedComments));
 };
 
+const serverLastId = (request, resposne) => {
+  const lastId = { lastId: request.guestBook.lastId };
+  resposne.setHeader('content-type', 'application/json');
+  resposne.end(JSON.stringify(lastId));
+};
+
+const serveCommentsAfter = (request, response) => {
+  const { url, guestBook } = request;
+  const lastId = url.searchParams.get('after');
+
+  const comments = guestBook.commentsAfter(lastId);
+  response.setHeader('content-type', 'application/json');
+  response.end(JSON.stringify(comments));
+};
+
 const apiRouter = (guestBook) => {
   return (request, response, next) => {
-    if (request.matches('GET', '/comments')) {
-      request.guestBook = guestBook;
-
-      if (request.url.searchParams.get('name')) {
-        serveCommentsOf(request, response);
-        return;
-      }
-      serveAllComments(request, response);
+    if (!request.matches('GET', '/api/comments')) {
+      next();
       return;
     }
-    next();
+
+    request.guestBook = guestBook;
+
+    const { searchParams } = request.url;
+
+    if (searchParams.get('name')) {
+      serveCommentsOf(request, response);
+      return;
+    }
+
+    if (searchParams.get('q') === 'last-id') {
+      serverLastId(request, response);
+      return;
+    }
+
+    if (searchParams.get('after')) {
+      serveCommentsAfter(request, response);
+      return;
+    }
+
+    serveAllComments(request, response);
+    return;
   };
 };
 

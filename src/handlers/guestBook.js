@@ -59,6 +59,14 @@ class GuestBook {
   get sourceFile() {
     return this.#sourceFile;
   }
+
+  get lastId() {
+    return this.#id;
+  }
+
+  commentsAfter(id) {
+    return this.#comments.filter(comment => comment.id > id);
+  }
 }
 
 module.exports = { GuestBook };

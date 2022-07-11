@@ -43,40 +43,45 @@ const createPost = (comment) => {
   return postElement;
 };
 
-const prependComment = function ({ response }) {
-  // this function should accept comment to add.
-  const comment = JSON.parse(response);
+const prependComment = function (comment) {
   const allComments = document.querySelector('.comments');
   const postElement = createPost(comment);
   allComments.prepend(postElement);
 };
 
-const sendRequest = (method, url, body = '', callBack) => {
+const prependComments = ({ response, status }, lastId) => {
+  if (status !== 200) {
+    console.log('error');
+    return;
+  }
+  const comments = JSON.parse(response).reverse();
+  lastId.lastId = comments[comments.length - 1].id;
+  comments.forEach(comment => prependComment(comment));
+};
+
+const sendRequest = (method, url, callBack, body = '') => {
   const xhr = new XMLHttpRequest();
   xhr.onload = () => callBack(xhr);
   xhr.open(method, url);
   xhr.send(body);
 };
 
-const addComment = (event) => {
+const addComment = (lastId) => {
   const formElement = document.querySelector('form');
   const formData = new FormData(formElement);
   const parsedForm = new URLSearchParams(formData);
-  sendRequest('POST', '/add-comment', parsedForm, prependComment);
+  sendRequest('POST', '/add-comment', () => { console.log('added comment'); }, parsedForm);
   formElement.reset();
-  // add comment to json + empty response + all data should be here.
-  // Request for rest of data through API.
+
+  sendRequest('GET', `/api/comments?after=${lastId.lastId}`, (xhr) => prependComments(xhr, lastId));
 };
 
 const main = () => {
-  // ask for current comments here.
-  const buttonElement = document.querySelector('#submit');
-  buttonElement.onclick = addComment;
+  sendRequest('GET', '/api/comments?q=last-id', ({ response }) => {
+    const lastId = JSON.parse(response);
+    const buttonElement = document.querySelector('#submit');
+    buttonElement.onclick = () => addComment(lastId);
+  });
 };
 
 window.onload = main;
-
-
-
-
-
