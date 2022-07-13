@@ -8,7 +8,7 @@ const guestBookHandler = (guestBook, template) => {
       if (!request.currentSession) {
         response.statusCode = 302;
         response.setHeader('location', '/login');
-        response.end();
+        response.end('need to login');
         return;
       }
 

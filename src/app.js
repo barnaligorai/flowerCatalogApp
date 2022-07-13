@@ -35,9 +35,7 @@ const fetchComments = (sourceDir, fs = fsModule) => {
   return new GuestBook(comments, fileName, id);
 };
 
-const app = (sourceDir = './public', resourceDir = './resource') => {
-  const sessions = new Sessions();
-  const users = ['bani'];
+const app = ({ sourceDir = './public', resourceDir = './resource' }, sessions, users) => {
   const guestBook = fetchComments(resourceDir);
   const template = readFile(resourceDir + '/guestbookTemplate.html');
   const handlers = [
