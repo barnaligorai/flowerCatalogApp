@@ -1,6 +1,6 @@
 const logoutHandler = sessions =>
   (req, res, next) => {
-    if (req.url.pathname !== '/logout') {
+    if (!req.matches('GET', '/logout')) {
       next();
       return;
     }

@@ -4,7 +4,7 @@ const isUserValid = (users, username) =>
 const redirectTo = (res, path) => {
   res.statusCode = 302;
   res.setHeader('location', path);
-  res.end();
+  res.end(`redirected to ${path}`);
   return;
 };
 
