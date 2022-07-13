@@ -20,7 +20,7 @@ const loginHandler = (sessions, users) =>
       return;
     }
 
-    // add cookie and session and redirect to homepage
+    // add cookie and session and redirect to guestbook
     const username = req.body.username;
     if (username && req.method === 'POST') {
       if (!isUserValid(users, username)) {

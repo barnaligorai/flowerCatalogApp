@@ -21,15 +21,17 @@ const registrationHandler = users =>
     }
 
     const username = req.body.username;
+
     if (req.matches('POST', '/register')) {
       if (isUserValid(users, username)) {
-        redirectTo(res, '/login');
+        res.statusCode = 200;
+        res.end('Username already exists');
         return;
       }
 
       users.push(username);
-
-      redirectTo(res, '/login');
+      res.statusCode = 200;
+      res.end('Registered successfully');
       return;
     }
 

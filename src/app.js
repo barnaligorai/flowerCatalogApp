@@ -13,8 +13,9 @@ const { injectSession } = require('./server/injectSession.js');
 const { registrationHandler } = require('./handlers/registrationHandler.js');
 const { logoutHandler } = require('./handlers/logoutHandler.js');
 const { parseUrlSearchParams } = require('./server/parseUrlSearchParams.js');
+const fsModule = require('fs');
 
-const readFile = (fileName, fs = require('fs')) => {
+const readFile = (fileName, fs = fsModule) => {
   return fs.readFileSync(fileName, 'utf8');
 };
 
@@ -22,7 +23,7 @@ const getLastId = (comments) => {
   return comments[0] ? comments[0].id : 0;
 };
 
-const fetchComments = (sourceDir, fs = require('fs')) => {
+const fetchComments = (sourceDir, fs = fsModule) => {
   const fileName = sourceDir + '/guestBook.json';
 
   if (!fs.existsSync(fileName)) {
