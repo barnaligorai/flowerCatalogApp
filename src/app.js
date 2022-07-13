@@ -1,3 +1,6 @@
+const fs = require('fs');
+const { GuestBook } = require('./handlers/guestBook.js');
+const { Sessions } = require('./sessions.js');
 const { postCommentHandler } = require('./handlers/postCommentHandler.js');
 const { fileHandler } = require('./handlers/fileHandler.js');
 const { guestBookHandler } = require('./handlers/guestBookHandler.js');
@@ -7,12 +10,10 @@ const { createRouter } = require('./server/createRouter.js');
 const { parseBody } = require('./server/parseBody.js');
 const { injectCookies } = require('./server/injectCookies.js');
 const { loginHandler } = require('./handlers/loginHandler.js');
-const { GuestBook } = require('./handlers/guestBook.js');
-const fs = require('fs');
 const { injectSession } = require('./server/injectSession.js');
 const { registrationHandler } = require('./handlers/registrationHandler.js');
-const { Sessions } = require('./sessions.js');
 const { logoutHandler } = require('./handlers/logoutHandler.js');
+const { parseUrlSearchParams } = require('./server/parseUrlSearchParams.js');
 
 const readFile = (fileName) => {
   return fs.readFileSync(fileName, 'utf8');
@@ -40,6 +41,7 @@ const app = (sourceDir = './public', resourceDir = './resource') => {
   const guestBook = fetchComments(resourceDir);
   const template = readFile(resourceDir + '/guestbookTemplate.html');
   const handlers = [
+    parseUrlSearchParams,
     parseBody,
     injectCookies,
     injectSession(sessions),

@@ -12,6 +12,4 @@ const createElementTree = (elements) => {
 
   children.forEach(child => parent.appendChild(createElementTree(child)));
   return parent;
-}
-
-// createElementTree(new Date(), "barnali", "a comment");
+};
