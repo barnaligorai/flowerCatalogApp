@@ -1,4 +1,3 @@
-const fs = require('fs');
 const { GuestBook } = require('./handlers/guestBook.js');
 const { Sessions } = require('./sessions.js');
 const { postCommentHandler } = require('./handlers/postCommentHandler.js');
@@ -7,7 +6,7 @@ const { guestBookHandler } = require('./handlers/guestBookHandler.js');
 const { notFound } = require('./handlers/notFound.js');
 const { apiRouter } = require('./handlers/apiRouter.js');
 const { createRouter } = require('./server/createRouter.js');
-const { parseBody } = require('./server/parseBody.js');
+const { injectBody } = require('./server/injectBody.js');
 const { injectCookies } = require('./server/injectCookies.js');
 const { loginHandler } = require('./handlers/loginHandler.js');
 const { injectSession } = require('./server/injectSession.js');
@@ -15,7 +14,7 @@ const { registrationHandler } = require('./handlers/registrationHandler.js');
 const { logoutHandler } = require('./handlers/logoutHandler.js');
 const { parseUrlSearchParams } = require('./server/parseUrlSearchParams.js');
 
-const readFile = (fileName) => {
+const readFile = (fileName, fs = require('fs')) => {
   return fs.readFileSync(fileName, 'utf8');
 };
 
@@ -23,7 +22,7 @@ const getLastId = (comments) => {
   return comments[0] ? comments[0].id : 0;
 };
 
-const fetchComments = (sourceDir) => {
+const fetchComments = (sourceDir, fs = require('fs')) => {
   const fileName = sourceDir + '/guestBook.json';
 
   if (!fs.existsSync(fileName)) {
@@ -42,7 +41,7 @@ const app = (sourceDir = './public', resourceDir = './resource') => {
   const template = readFile(resourceDir + '/guestbookTemplate.html');
   const handlers = [
     parseUrlSearchParams,
-    parseBody,
+    injectBody,
     injectCookies,
     injectSession(sessions),
     registrationHandler(users),

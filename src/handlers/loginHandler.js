@@ -21,7 +21,7 @@ const loginHandler = (sessions, users) =>
     }
 
     // add cookie and session and redirect to homepage
-    const username = req.bodyParams.username;
+    const username = req.body.username;
     if (username && req.method === 'POST') {
       if (!isUserValid(users, username)) {
         redirectTo(res, '/register');

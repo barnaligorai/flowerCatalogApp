@@ -1,5 +1,10 @@
 const parseBodyParams = (paramsString) => {
   const bodyParams = {};
+
+  if (!paramsString) {
+    return bodyParams;
+  }
+
   const params = new URLSearchParams(paramsString);
   for (const [field, value] of params.entries()) {
     bodyParams[field] = value;
@@ -7,7 +12,7 @@ const parseBodyParams = (paramsString) => {
   return bodyParams;
 };
 
-const parseBody = (request, response, next) => {
+const injectBody = (request, response, next) => {
   let data = '';
   request.on('data', chunk => {
     data += chunk;
@@ -15,9 +20,9 @@ const parseBody = (request, response, next) => {
 
   request.on('end', () => {
     const bodyParams = parseBodyParams(data);
-    request.bodyParams = bodyParams;
+    request.body = bodyParams;
     next();
   })
 };
 
-module.exports = { parseBody };
+module.exports = { injectBody };

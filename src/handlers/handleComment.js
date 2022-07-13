@@ -1,8 +1,8 @@
 const fs = require('fs');
 
 const addComment = (request) => {
-  const { guestBook, bodyParams, currentSession } = request;
-  const { comment } = bodyParams;
+  const { guestBook, body, currentSession } = request;
+  const { comment } = body;
   const name = currentSession.username;
   const post = guestBook.add(name, comment);
   return post;

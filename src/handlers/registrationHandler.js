@@ -20,7 +20,7 @@ const registrationHandler = users =>
       return;
     }
 
-    const username = req.bodyParams.username;
+    const username = req.body.username;
     if (req.matches('POST', '/register')) {
       if (isUserValid(users, username)) {
         redirectTo(res, '/login');
