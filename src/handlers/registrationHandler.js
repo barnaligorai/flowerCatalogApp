@@ -20,9 +20,16 @@ const registrationHandler = users =>
       return;
     }
 
-    const username = req.body.username;
-
     if (req.matches('POST', '/register')) {
+
+      const username = req.body.username;
+
+      if (!username) {
+        res.statusCode = 400;
+        res.end('Provide username');
+        return;
+      }
+
       if (isUserValid(users, username)) {
         res.statusCode = 200;
         res.end('Username already exists');

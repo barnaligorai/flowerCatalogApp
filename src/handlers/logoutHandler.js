@@ -13,7 +13,7 @@ const logoutHandler = sessions =>
 
     res.statusCode = 302;
     res.setHeader('location', '/login');
-    res.end();
+    res.end('Redirecting to login page');
   };
 
 module.exports = { logoutHandler };

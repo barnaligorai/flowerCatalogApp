@@ -46,9 +46,9 @@ const app = ({ sourceDir = './public', templateFile = './resource/guestbookTempl
     loginHandler(sessions, users),
     logoutHandler(sessions),
     guestBookHandler(guestBook, template),
-    fileHandler(sourceDir),
     apiRouter(guestBook),
     postCommentHandler(guestBook),
+    fileHandler(sourceDir),
     notFound
   ];
   return createRouter(handlers);

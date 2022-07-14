@@ -2,6 +2,8 @@ const request = require('supertest');
 const { app } = require('../src/app.js');
 const { Sessions } = require('../src/sessions.js');
 
+const assert = require('assert');
+
 describe('app', () => {
   let config;
   let sessions;
@@ -93,39 +95,6 @@ describe('app', () => {
     });
   });
 
-  describe('POST /login', () => {
-    it('should redirect the user to register page for POST /login when user is not registered', (done) => {
-      request(myApp)
-        .post('/login')
-        .send('username=bani')
-        .expect('location', '/register')
-        .expect(/redirect/)
-        .expect(302, done);
-    });
-
-    it('should log the user in for POST /login when user is valid', (done) => {
-      users.push('bani');
-      const myApp = app(config, sessions, users);
-      request(myApp)
-        .post('/login')
-        .send('username=bani')
-        .expect('location', '/guestbook.html')
-        .expect(/redirect/)
-        .expect(302, done);
-    });
-
-    it('should log the user in for POST /login when user is valid', (done) => {
-      users.push('bani');
-      const myApp = app(config, sessions, users);
-      request(myApp)
-        .post('/login')
-        .send('username=barnali')
-        .expect('location', '/register')
-        .expect(/redirect/)
-        .expect(302, done);
-    });
-  });
-
   describe('POST /add-comment', () => {
     it('should add a comment in guestbook for POST /add-comment when session is valid', (done) => {
       const config = {
@@ -192,6 +161,94 @@ describe('app', () => {
         .expect('content-type', /json/)
         .expect(/^\[.*\]$/)
         .expect(200, done)
+    });
+  });
+
+  describe('POST /login', () => {
+    it('should redirect the user to register page for POST /login when user is not registered', (done) => {
+      request(myApp)
+        .post('/login')
+        .send('username=bani')
+        .expect('location', '/register')
+        .expect(/redirect/)
+        .expect(302, done);
+    });
+
+    it('should log the user in for POST /login when user is valid', (done) => {
+      users.push('bani');
+      const myApp = app(config, sessions, users);
+      request(myApp)
+        .post('/login')
+        .send('username=bani')
+        .expect('location', '/guestbook.html')
+        .expect(/redirect/)
+        .expect(302, done);
+    });
+
+    it('should log the user in for POST /login when user is valid', (done) => {
+      users.push('bani');
+      const myApp = app(config, sessions, users);
+      request(myApp)
+        .post('/login')
+        .send('username=barnali')
+        .expect('location', '/register')
+        .expect(/redirect/)
+        .expect(302, done);
+    });
+  });
+
+  describe('GET /logout', () => {
+    it('should redirect to login page for GET /logout when user is not already logged in', (done) => {
+      request(myApp)
+        .get('/logout')
+        .expect('location', '/login')
+        .expect(/Redirect/)
+        .expect(302, done);
+    });
+
+    it('should log the user out for GET /logout when user is already logged in', (done) => {
+      const sessionId = sessions.add('bani');
+      request(myApp)
+        .get('/logout')
+        .set('Cookie', `sessionId=${sessionId}`)
+        .expect('location', '/login')
+        .expect(/Redirect/)
+        .expect(302, done);
+    });
+  });
+
+  describe('POST /register', () => {
+    it('should not register the user for POST /register if the username is not provided', (done) => {
+      request(myApp)
+        .post('/register')
+        .expect('Provide username')
+        .expect(400, done);
+    });
+
+    it('should register the user for POST /register if the user is new', (done) => {
+      request(myApp)
+        .post('/register')
+        .send('username=bani')
+        .expect(/successful/)
+        .expect(200)
+        .end((err, res) => {
+          assert.deepStrictEqual(users, ['bani']);
+          done();
+        });
+    });
+
+    it('should register the user for POST /register if the user is new', (done) => {
+      users.push('bani');
+      const myApp = app(config, sessions, users)
+      request(myApp)
+        .post('/register')
+        .send('username=bani')
+        .expect(/exists/)
+        .expect(200)
+        .end(() => {
+          assert.deepStrictEqual(users, ['bani']);
+          done();
+        });
     });
   });
 });
