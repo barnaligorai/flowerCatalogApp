@@ -160,4 +160,38 @@ describe('app', () => {
         .expect(302, done)
     });
   });
+
+  describe('GET /api/comments', () => {
+    it('should send all the comments for GET /api/comments', (done) => {
+      request(myApp)
+        .get('/api/comments')
+        .expect('content-type', /json/)
+        .expect(/^\[.*\]$/)
+        .expect(200, done)
+    });
+
+    it('should send the comments of the provided user for GET /api/comments?name=username', (done) => {
+      request(myApp)
+        .get('/api/comments?name=bani')
+        .expect('content-type', /json/)
+        .expect(/^\[.*\]$/)
+        .expect(200, done)
+    });
+
+    it('should send the lastId for GET /api/comments?q=last-id', (done) => {
+      request(myApp)
+        .get('/api/comments?q=last-id')
+        .expect('content-type', /json/)
+        .expect(/{"lastId":\d+}/)
+        .expect(200, done)
+    });
+
+    it('should send all the comments after the provided id for GET /api/comments?after=lastId', (done) => {
+      request(myApp)
+        .get('/api/comments?after=1')
+        .expect('content-type', /json/)
+        .expect(/^\[.*\]$/)
+        .expect(200, done)
+    });
+  });
 });
