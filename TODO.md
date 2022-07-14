@@ -1,11 +1,13 @@
 ## TODO
 
-  - [ ] Load the files first
+  - [ ] Delete the unnecessary files
+  - [ ] Change the old responses to express responses
   - [ ] Remove dependencies
-  - [ ] Style the home page
 
 ## DONE
 
+  - [x] Test the app
+  - [x] Implement express
   - [x] Write bodyParser
   - [x] Implement POST method
   - [x] Use package.json

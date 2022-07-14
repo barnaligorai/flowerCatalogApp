@@ -10,18 +10,12 @@ const redirectTo = (res, path) => {
 
 const registrationHandler = users =>
   (req, res, next) => {
-    if (req.url.pathname !== '/register') {
-      next();
-      return;
-    }
-
     if (req.currentSession) {
       redirectTo(res, '/guestbook.html');
       return;
     }
 
-    if (req.matches('POST', '/register')) {
-
+    if (req.method === 'POST') {
       const username = req.body.username;
 
       if (!username) {
@@ -42,7 +36,7 @@ const registrationHandler = users =>
       return;
     }
 
-    req.url.pathname = '/register.html';
+    req.url = '/register.html';
     next();
   };
 

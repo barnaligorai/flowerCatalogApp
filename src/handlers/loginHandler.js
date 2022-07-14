@@ -10,7 +10,7 @@ const redirectTo = (res, path) => {
 
 const loginHandler = (sessions, users) =>
   (req, res, next) => {
-    if (req.url.pathname !== '/login') {
+    if (req.url !== '/login') {
       next();
       return;
     }
@@ -27,7 +27,6 @@ const loginHandler = (sessions, users) =>
         redirectTo(res, '/register');
         return;
       }
-
       const sessionId = sessions.add(username);
       res.setHeader('Set-Cookie', `sessionId = ${sessionId}`);
       redirectTo(res, '/guestbook.html');
@@ -35,7 +34,7 @@ const loginHandler = (sessions, users) =>
     }
 
     // redirect to login page
-    req.url.pathname = '/login.html';
+    req.url = '/login.html';
     next();
   };
 

@@ -1,8 +1,10 @@
 const request = require('supertest');
-const { app } = require('../src/app.js');
+const { createApp: app } = require('../src/app.js');
 const { Sessions } = require('../src/sessions.js');
 
 const assert = require('assert');
+
+const mockedLogger = (method, url) => { };
 
 describe('app', () => {
   let config;
@@ -11,10 +13,14 @@ describe('app', () => {
   let myApp;
 
   beforeEach(() => {
-    config = { sourceDir: './public', resourceDir: './resource' };
+    config = {
+      sourceDir: './public',
+      templateFile: './resource/guestbookTemplate.html',
+      dataFile: './data/guestBook.json'
+    };
     sessions = new Sessions();
     users = [];
-    myApp = app(config, sessions, users);
+    myApp = app(config, sessions, users, mockedLogger);
   });
 
   describe('GET /wrongUrl', () => {
@@ -22,7 +28,7 @@ describe('app', () => {
       request(myApp)
         .get('/wrongUrl')
         .expect('content-type', /html/)
-        .expect(/can't be reached/)
+        .expect(/Cannot GET/)
         .expect(404, done);
     });
   });
@@ -72,19 +78,20 @@ describe('app', () => {
 
     it('should serve the guestbook for GET /guestbook.html when session is valid', (done) => {
       const sessionId = sessions.add('bani');
-      const myApp = app(config, sessions, users);
+      users.push('bani');
+      const myApp = app(config, sessions, users, mockedLogger);
 
       request(myApp)
         .get('/guestbook.html')
         .set('Cookie', [`sessionId=${sessionId}`])
         .expect('content-type', /html/)
         .expect(/form/)
-        .expect(200, done);
+        .expect(200, done)
     });
 
     it('should serve the guestbook for GET /guestbook.html when session is valid', (done) => {
       const sessionId = sessions.add('bani');
-      const myApp = app(config, sessions, users);
+      const myApp = app(config, sessions, users, mockedLogger);
 
       request(myApp)
         .get('/guestbook.html')
@@ -104,7 +111,7 @@ describe('app', () => {
       };
       const sessionId = sessions.add('bani');
       users.push('bani');
-      const myApp = app(config, sessions, users);
+      const myApp = app(config, sessions, users, mockedLogger);
       request(myApp)
         .post('/add-comment')
         .send('comment=hello')
@@ -144,7 +151,7 @@ describe('app', () => {
         .get('/api/comments?name=bani')
         .expect('content-type', /json/)
         .expect(/^\[.*\]$/)
-        .expect(200, done)
+        .expect(200, done);
     });
 
     it('should send the lastId for GET /api/comments?q=last-id', (done) => {
@@ -176,7 +183,7 @@ describe('app', () => {
 
     it('should log the user in for POST /login when user is valid', (done) => {
       users.push('bani');
-      const myApp = app(config, sessions, users);
+      const myApp = app(config, sessions, users, mockedLogger);
       request(myApp)
         .post('/login')
         .send('username=bani')
@@ -185,9 +192,9 @@ describe('app', () => {
         .expect(302, done);
     });
 
-    it('should log the user in for POST /login when user is valid', (done) => {
+    it('should redirect to registration page for POST /login when user is not valid', (done) => {
       users.push('bani');
-      const myApp = app(config, sessions, users);
+      const myApp = app(config, sessions, users, mockedLogger);
       request(myApp)
         .post('/login')
         .send('username=barnali')
@@ -239,7 +246,7 @@ describe('app', () => {
 
     it('should register the user for POST /register if the user is new', (done) => {
       users.push('bani');
-      const myApp = app(config, sessions, users)
+      const myApp = app(config, sessions, users, mockedLogger);
       request(myApp)
         .post('/register')
         .send('username=bani')

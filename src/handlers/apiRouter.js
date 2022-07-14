@@ -13,8 +13,8 @@ const filterComments = (guestBook, user) => {
 };
 
 const serveCommentsOf = (request, response) => {
-  const { guestBook, url } = request;
-  const name = url.searchParams.get('name');
+  const name = request.query.name;
+  const { guestBook } = request;
   const selectedComments = filterComments(guestBook, name);
 
   response.statuscode = 200;
@@ -29,8 +29,8 @@ const serverLastId = (request, resposne) => {
 };
 
 const serveCommentsAfter = (request, response) => {
-  const { url, guestBook } = request;
-  const lastId = url.searchParams.get('after');
+  const { query, guestBook } = request;
+  const lastId = query.after;
 
   const comments = guestBook.commentsAfter(lastId);
   response.setHeader('content-type', 'application/json');
@@ -39,26 +39,20 @@ const serveCommentsAfter = (request, response) => {
 
 const apiRouter = (guestBook) => {
   return (request, response, next) => {
-    if (!request.matches('GET', '/api/comments')) {
-      next();
-      return;
-    }
 
     request.guestBook = guestBook;
 
-    const { searchParams } = request.url;
-
-    if (searchParams.get('name')) {
+    if (request.query.name) {
       serveCommentsOf(request, response);
       return;
     }
 
-    if (searchParams.get('q') === 'last-id') {
+    if (request.query.q === 'last-id') {
       serverLastId(request, response);
       return;
     }
 
-    if (searchParams.get('after')) {
+    if (request.query.after) {
       serveCommentsAfter(request, response);
       return;
     }

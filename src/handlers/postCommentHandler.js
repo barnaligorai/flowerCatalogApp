@@ -1,21 +1,17 @@
 const { handleComment } = require('./handleComment.js');
 
-const postCommentHandler = guestBook => (request, response, next) => {
+const postCommentHandler = guestBook => (request, response) => {
 
-  if (request.matches('POST', '/add-comment')) {
-    if (!request.currentSession) {
-      response.statusCode = 302;
-      response.setHeader('location', '/login');
-      response.end('need to login first');
-      return;
-    }
-
-    request.guestBook = guestBook;
-    handleComment(request, response);
+  if (!request.currentSession) {
+    response.statusCode = 302;
+    response.setHeader('location', '/login');
+    response.end('need to login first');
     return;
   }
 
-  next();
+  request.guestBook = guestBook;
+  handleComment(request, response);
+  return;
 };
 
 module.exports = { postCommentHandler };

@@ -13,6 +13,7 @@ const prependComments = ({ response, status }, lastId) => {
     return;
   }
   const comments = JSON.parse(response).reverse();
+  console.log('res', response);
   lastId.lastId = comments[comments.length - 1].id;
 
   const allComments = document.querySelector('.comments');
