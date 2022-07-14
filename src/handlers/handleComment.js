@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fileSystem = require('fs');
 
 const addComment = (request) => {
   const { guestBook, body, currentSession } = request;
@@ -8,7 +8,7 @@ const addComment = (request) => {
   return post;
 };
 
-const updateDatabase = (guestBook) => {
+const updateDatabase = (guestBook, fs = fileSystem) => {
   const commentsJson = JSON.stringify(guestBook.getComments());
   const fileName = guestBook.sourceFile;
   fs.writeFileSync(fileName, commentsJson, 'utf8');

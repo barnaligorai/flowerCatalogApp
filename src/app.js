@@ -23,8 +23,7 @@ const getLastId = (comments) => {
   return comments[0] ? comments[0].id : 0;
 };
 
-const fetchComments = (sourceDir, fs = fsModule) => {
-  const fileName = sourceDir + '/guestBook.json';
+const fetchComments = (fileName, fs = fsModule) => {
 
   if (!fs.existsSync(fileName)) {
     fs.writeFileSync(fileName, JSON.stringify([]), 'utf-8');
@@ -35,9 +34,9 @@ const fetchComments = (sourceDir, fs = fsModule) => {
   return new GuestBook(comments, fileName, id);
 };
 
-const app = ({ sourceDir = './public', resourceDir = './resource' }, sessions, users) => {
-  const guestBook = fetchComments(resourceDir);
-  const template = readFile(resourceDir + '/guestbookTemplate.html');
+const app = ({ sourceDir = './public', templateFile = './resource/guestbookTemplate.html', dataFile = './data/guestBook.json' }, sessions, users) => {
+  const guestBook = fetchComments(dataFile);
+  const template = readFile(templateFile);
   const handlers = [
     parseUrlSearchParams,
     injectBody,

@@ -105,7 +105,7 @@ describe('app', () => {
 
     it('should log the user in for POST /login when user is valid', (done) => {
       users.push('bani');
-      const myApp = app(config, sessions, users)
+      const myApp = app(config, sessions, users);
       request(myApp)
         .post('/login')
         .send('username=bani')
@@ -116,13 +116,48 @@ describe('app', () => {
 
     it('should log the user in for POST /login when user is valid', (done) => {
       users.push('bani');
-      const myApp = app(config, sessions, users)
+      const myApp = app(config, sessions, users);
       request(myApp)
         .post('/login')
         .send('username=barnali')
         .expect('location', '/register')
         .expect(/redirect/)
         .expect(302, done);
+    });
+  });
+
+  describe('POST /add-comment', () => {
+    it('should add a comment in guestbook for POST /add-comment when session is valid', (done) => {
+      const config = {
+        sourceDir: './public',
+        templateFile: './resource/guestbookTemplate.html',
+        dataFile: './test/testData/dummyGuestBook.json'
+      };
+      const sessionId = sessions.add('bani');
+      users.push('bani');
+      const myApp = app(config, sessions, users);
+      request(myApp)
+        .post('/add-comment')
+        .send('comment=hello')
+        .set('Cookie', [`sessionId=${sessionId}`])
+        .expect(200, done);
+    });
+
+    it('should not add a comment for POST /add-comment when session is invalid', (done) => {
+      request(myApp)
+        .post('/add-comment')
+        .send('comment=hello')
+        .set('Cookie', 'sessionId=1234')
+        .expect('location', '/login')
+        .expect(302, done)
+    });
+
+    it('should not add comment for POST /add-comment when sessionId is not present', (done) => {
+      request(myApp)
+        .post('/add-comment')
+        .send('comment=hello')
+        .expect('location', '/login')
+        .expect(302, done)
     });
   });
 });
