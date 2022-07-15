@@ -100,8 +100,8 @@ describe('app', () => {
     });
   });
 
-  describe('POST /add-comment', () => {
-    it('should add a comment in guestbook for POST /add-comment when session is valid', (done) => {
+  describe('POST /guestbook/add-comment', () => {
+    it('should add a comment in guestbook for POST /guestbook/add-comment when session is valid', (done) => {
       const config = {
         sourceDir: './public',
         templateFile: './resource/guestbookTemplate.html',
@@ -111,61 +111,84 @@ describe('app', () => {
       users.push('bani');
       const myApp = app(config, sessions, users, mockedLogger);
       request(myApp)
-        .post('/add-comment')
+        .post('/guestbook/add-comment')
         .send('comment=hello')
         .set('Cookie', [`sessionId=${sessionId}`])
         .expect(200, done);
     });
 
-    it('should not add a comment for POST /add-comment when session is invalid', (done) => {
+    it('should not add a comment for POST /guestbook/add-comment when session is invalid', (done) => {
       request(myApp)
-        .post('/add-comment')
+        .post('/guestbook/add-comment')
         .send('comment=hello')
         .set('Cookie', 'sessionId=1234')
         .expect('location', '/login')
         .expect(302, done)
     });
 
-    it('should not add comment for POST /add-comment when sessionId is not present', (done) => {
+    it('should not add comment for POST /guestbook/add-comment when sessionId is not present', (done) => {
       request(myApp)
-        .post('/add-comment')
+        .post('/guestbook/add-comment')
         .send('comment=hello')
         .expect('location', '/login')
         .expect(302, done)
     });
   });
 
-  describe('GET /api/comments', () => {
-    it('should send all the comments for GET /api/comments', (done) => {
+  describe('GET /guestbook/comments', () => {
+    it('should send all the comments for GET /guestbook/comments when user is logged in', (done) => {
+      users.push('bani');
+      const sessionId = sessions.add('bani');
+      const myApp = app(config, sessions, users, mockedLogger);
       request(myApp)
-        .get('/api/comments')
-        .expect('content-type', /json/)
-        .expect(/^\[.*\]$/)
-        .expect(200, done)
-    });
-
-    it('should send the comments of the provided user for GET /api/comments?name=username', (done) => {
-      request(myApp)
-        .get('/api/comments?name=bani')
+        .get('/guestbook/comments')
+        .set('Cookie', `sessionId=${sessionId}`)
         .expect('content-type', /json/)
         .expect(/^\[.*\]$/)
         .expect(200, done);
     });
 
-    it('should send the lastId for GET /api/comments?q=last-id', (done) => {
+    it('should send the comments of the provided user for GET /guestbook/comments?name=username when user is logged in', (done) => {
+      users.push('bani');
+      const sessionId = sessions.add('bani');
+      const myApp = app(config, sessions, users, mockedLogger);
       request(myApp)
-        .get('/api/comments?q=last-id')
+        .get('/guestbook/comments?name=bani')
+        .set('Cookie', `sessionId=${sessionId}`)
+        .expect('content-type', /json/)
+        .expect(/^\[.*\]$/)
+        .expect(200, done);
+    });
+
+    it('should send the lastId for GET /guestbook/comments?q=last-id when user is logged in', (done) => {
+      users.push('bani');
+      const sessionId = sessions.add('bani');
+      const myApp = app(config, sessions, users, mockedLogger);
+      request(myApp)
+        .get('/guestbook/comments?q=last-id')
+        .set('Cookie', `sessionId=${sessionId}`)
         .expect('content-type', /json/)
         .expect(/{"lastId":\d+}/)
         .expect(200, done)
     });
 
-    it('should send all the comments after the provided id for GET /api/comments?after=lastId', (done) => {
+    it('should send all the comments after the provided id for GET /guestbook/comments?after=lastId when user is logged in', (done) => {
+      users.push('bani');
+      const sessionId = sessions.add('bani');
+      const myApp = app(config, sessions, users, mockedLogger);
       request(myApp)
-        .get('/api/comments?after=1')
+        .get('/guestbook/comments?after=1')
+        .set('Cookie', `sessionId=${sessionId}`)
         .expect('content-type', /json/)
         .expect(/^\[.*\]$/)
         .expect(200, done)
+    });
+
+    it('should not serve comments for GET /guestbook/comments when user is not logged in', (done) => {
+      request(myApp)
+        .get('/guestbook/comments')
+        .expect('location', /login/)
+        .expect(302, done)
     });
   });
 

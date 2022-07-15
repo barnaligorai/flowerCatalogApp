@@ -1,8 +1,6 @@
-const express = require('express');
-
-const serveAllComments = (request, response) => {
-  const { guestBook } = request;
-  response.json(guestBook.getComments());
+const serveAllComments = (req, res) => {
+  const { guestBook } = req;
+  res.json(guestBook.getComments());
 };
 
 const filterComments = (guestBook, user) => {
@@ -11,54 +9,47 @@ const filterComments = (guestBook, user) => {
     comment.name.toLowerCase() === user.toLowerCase());
 };
 
-const serveCommentsOf = (request, response) => {
-  const name = request.query.name;
-  const { guestBook } = request;
+const serveCommentsOf = (req, res) => {
+  const name = req.query.name;
+  const { guestBook } = req;
   const selectedComments = filterComments(guestBook, name);
-  response.json(selectedComments);
+  res.json(selectedComments);
 };
 
-const serverLastId = (request, resposne) => {
-  const lastId = { lastId: request.guestBook.lastId };
+const serverLastId = (req, resposne) => {
+  const lastId = { lastId: req.guestBook.lastId };
   resposne.json(lastId);
 };
 
-const serveCommentsAfter = (request, response) => {
-  const { query, guestBook } = request;
+const serveCommentsAfter = (req, res) => {
+  const { query, guestBook } = req;
   const lastId = query.after;
 
   const comments = guestBook.commentsAfter(lastId);
-  response.json(comments);
+  res.json(comments);
 };
 
 const apiRouter = (guestBook) => {
-  return (request, response) => {
+  return (req, res) => {
+    req.guestBook = guestBook;
 
-    request.guestBook = guestBook;
-
-    if (request.query.name) {
-      serveCommentsOf(request, response);
+    if (req.query.name) {
+      serveCommentsOf(req, res);
       return;
     }
 
-    if (request.query.q === 'last-id') {
-      serverLastId(request, response);
+    if (req.query.q === 'last-id') {
+      serverLastId(req, res);
       return;
     }
 
-    if (request.query.after) {
-      serveCommentsAfter(request, response);
+    if (req.query.after) {
+      serveCommentsAfter(req, res);
       return;
     }
 
-    serveAllComments(request, response);
+    serveAllComments(req, res);
   };
 };
 
-const createApiRouter = (guestBook) => {
-  const apiRoute = express.Router();
-  apiRoute.get('/comments*', apiRouter(guestBook));
-  return apiRoute;
-};
-
-module.exports = { apiRouter, createApiRouter };
+module.exports = { apiRouter };

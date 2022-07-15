@@ -1,7 +1,5 @@
 const { GuestBook } = require('./handlers/guestBook.js');
-const { postCommentHandler } = require('./handlers/postCommentHandler.js');
 const { guestBookHandler } = require('./handlers/guestBookHandler.js');
-const { apiRouter, createApiRouter } = require('./handlers/apiRouter.js');
 const { injectCookies } = require('./server/injectCookies.js');
 const { serveLoginPage } = require('./handlers/serveLoginPage.js');
 const { newLogin } = require('./handlers/newLogin.js');
@@ -35,7 +33,14 @@ const logRequest = (logger) => (req, res, next) => {
   next();
 };
 
-const createApp = ({ templateFile = './resource/guestbookTemplate.html', dataFile = './data/guestBook.json' }, sessions, users, logger) => {
+const defaultConfig = {
+  templateFile: './resource/guestbookTemplate.html',
+  dataFile: './data/guestBook.json',
+  sourceDir: './public'
+};
+
+const createApp = (config = defaultConfig, sessions, users, logger) => {
+  const { templateFile, dataFile, sourceDir } = config;
   const app = express();
 
   const guestBook = fetchComments(dataFile);
@@ -54,13 +59,9 @@ const createApp = ({ templateFile = './resource/guestbookTemplate.html', dataFil
   app.get('/register', serveRegistrationPage);
   app.post('/register', newRegistration(users));
 
-  app.get('/guestbook', guestBookHandler(guestBook, template));
+  app.use('/guestbook', guestBookHandler(guestBook, template, dataFile));
 
-  app.use('/api', createApiRouter(guestBook));
-
-  app.post('/add-comment', postCommentHandler(guestBook, dataFile));
-
-  app.use(express.static('public'));
+  app.use(express.static(sourceDir));
 
   return app;
 };
