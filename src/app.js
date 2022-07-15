@@ -1,11 +1,13 @@
 const { GuestBook } = require('./handlers/guestBook.js');
 const { postCommentHandler } = require('./handlers/postCommentHandler.js');
 const { guestBookHandler } = require('./handlers/guestBookHandler.js');
-const { apiRouter } = require('./handlers/apiRouter.js');
+const { apiRouter, createApiRouter } = require('./handlers/apiRouter.js');
 const { injectCookies } = require('./server/injectCookies.js');
-const { loginHandler } = require('./handlers/loginHandler.js');
+const { serveLoginPage } = require('./handlers/serveLoginPage.js');
+const { newLogin } = require('./handlers/newLogin.js');
 const { injectSession } = require('./server/injectSession.js');
-const { registrationHandler } = require('./handlers/registrationHandler.js');
+const { serveRegistrationPage } = require('./handlers/serveRegistrationPage.js');
+const { newRegistration } = require('./handlers/newRegistration.js');
 const { logoutHandler } = require('./handlers/logoutHandler.js');
 const fsModule = require('fs');
 
@@ -25,7 +27,7 @@ const fetchComments = (fileName, fs = fsModule) => {
   }
   const comments = JSON.parse(readFile(fileName));
   const id = getLastId(comments);
-  return new GuestBook(comments, fileName, id);
+  return new GuestBook(comments, id);
 };
 
 const logRequest = (logger) => (req, res, next) => {
@@ -44,19 +46,19 @@ const createApp = ({ templateFile = './resource/guestbookTemplate.html', dataFil
   app.use(injectCookies);
   app.use(injectSession(sessions));
 
-  app.get('/login', loginHandler(sessions, users));
-  app.post('/login', loginHandler(sessions, users));
+  app.get('/login', serveLoginPage(sessions, users));
+  app.post('/login', newLogin(sessions, users));
 
   app.get('/logout', logoutHandler(sessions));
 
-  app.get('/register', registrationHandler(users));
-  app.post('/register', registrationHandler(users));
+  app.get('/register', serveRegistrationPage);
+  app.post('/register', newRegistration(users));
 
-  app.get('/guestbook.html', guestBookHandler(guestBook, template));
+  app.get('/guestbook', guestBookHandler(guestBook, template));
 
-  app.get('/api/comments*', apiRouter(guestBook));
+  app.use('/api', createApiRouter(guestBook));
 
-  app.post('/add-comment', postCommentHandler(guestBook));
+  app.post('/add-comment', postCommentHandler(guestBook, dataFile));
 
   app.use(express.static('public'));
 

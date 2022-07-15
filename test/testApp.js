@@ -67,37 +67,35 @@ describe('app', () => {
     });
   });
 
-  describe('GET /guestbook.html', () => {
-    it('should serve the login page for GET /guestbook.html when session is not present', (done) => {
+  describe('GET /guestbook', () => {
+    it('should serve the login page for GET /guestbook when session is not present', (done) => {
       request(myApp)
-        .get('/guestbook.html')
+        .get('/guestbook')
         .expect('location', '/login')
-        .expect('need to login')
         .expect(302, done);
     });
 
-    it('should serve the guestbook for GET /guestbook.html when session is valid', (done) => {
+    it('should serve the guestbook for GET /guestbook when session is valid', (done) => {
       const sessionId = sessions.add('bani');
       users.push('bani');
       const myApp = app(config, sessions, users, mockedLogger);
 
       request(myApp)
-        .get('/guestbook.html')
+        .get('/guestbook')
         .set('Cookie', [`sessionId=${sessionId}`])
         .expect('content-type', /html/)
         .expect(/form/)
         .expect(200, done)
     });
 
-    it('should serve the guestbook for GET /guestbook.html when session is valid', (done) => {
+    it('should redirect to the guestbook for GET /guestbook when session is not valid', (done) => {
       const sessionId = sessions.add('bani');
       const myApp = app(config, sessions, users, mockedLogger);
 
       request(myApp)
-        .get('/guestbook.html')
+        .get('/guestbook')
         .set('Cookie', ['sessionId=1234'])
         .expect('location', '/login')
-        .expect('need to login')
         .expect(302, done);
     });
   });
@@ -177,7 +175,6 @@ describe('app', () => {
         .post('/login')
         .send('username=bani')
         .expect('location', '/register')
-        .expect(/redirect/)
         .expect(302, done);
     });
 
@@ -187,8 +184,7 @@ describe('app', () => {
       request(myApp)
         .post('/login')
         .send('username=bani')
-        .expect('location', '/guestbook.html')
-        .expect(/redirect/)
+        .expect('location', '/guestbook')
         .expect(302, done);
     });
 
@@ -199,7 +195,6 @@ describe('app', () => {
         .post('/login')
         .send('username=barnali')
         .expect('location', '/register')
-        .expect(/redirect/)
         .expect(302, done);
     });
   });
@@ -225,14 +220,14 @@ describe('app', () => {
   });
 
   describe('POST /register', () => {
-    it('should not register the user for POST /register if the username is not provided', (done) => {
+    it('should not register the user for POST /register when the username is not provided', (done) => {
       request(myApp)
         .post('/register')
         .expect('Provide username')
         .expect(400, done);
     });
 
-    it('should register the user for POST /register if the user is new', (done) => {
+    it('should register the user for POST /register when the user is new', (done) => {
       request(myApp)
         .post('/register')
         .send('username=bani')
@@ -244,7 +239,7 @@ describe('app', () => {
         });
     });
 
-    it('should register the user for POST /register if the user is new', (done) => {
+    it('should not register the user for POST /register when the username already exists', (done) => {
       users.push('bani');
       const myApp = app(config, sessions, users, mockedLogger);
       request(myApp)

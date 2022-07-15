@@ -7,9 +7,7 @@ const logoutHandler = sessions =>
       res.setHeader('set-cookie', `sessionId= ${sessionId};max-age=-1`);
     }
 
-    res.statusCode = 302;
-    res.setHeader('location', '/login');
-    res.end('Redirecting to login page');
+    res.redirect('/login');
   };
 
 module.exports = { logoutHandler };

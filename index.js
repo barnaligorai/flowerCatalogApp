@@ -2,7 +2,12 @@ const { createApp } = require('./src/app.js');
 
 const startServer = (PORT) => {
   const { Sessions } = require('./src/sessions.js');
-  const config = { sourceDir: './public', templateFile: './resource/guestbookTemplate.html', dataFile: './data/guestBook.json' };
+  const config = {
+    sourceDir: './public',
+    templateFile: './resource/guestbookTemplate.html',
+    dataFile: './data/guestBook.json',
+    usersFile: './data/users.json'
+  };
 
   const sessions = new Sessions();
   const users = ['bani'];

@@ -1,9 +1,8 @@
+const express = require('express');
+
 const serveAllComments = (request, response) => {
   const { guestBook } = request;
-  const jsonComments = JSON.stringify(guestBook.getComments());
-  response.statuscode = 200;
-  response.setHeader('Content-Type', 'application/json');
-  response.end(jsonComments);
+  response.json(guestBook.getComments());
 };
 
 const filterComments = (guestBook, user) => {
@@ -16,16 +15,12 @@ const serveCommentsOf = (request, response) => {
   const name = request.query.name;
   const { guestBook } = request;
   const selectedComments = filterComments(guestBook, name);
-
-  response.statuscode = 200;
-  response.setHeader('Content-Type', 'application/json');
-  response.end(JSON.stringify(selectedComments));
+  response.json(selectedComments);
 };
 
 const serverLastId = (request, resposne) => {
   const lastId = { lastId: request.guestBook.lastId };
-  resposne.setHeader('content-type', 'application/json');
-  resposne.end(JSON.stringify(lastId));
+  resposne.json(lastId);
 };
 
 const serveCommentsAfter = (request, response) => {
@@ -33,12 +28,11 @@ const serveCommentsAfter = (request, response) => {
   const lastId = query.after;
 
   const comments = guestBook.commentsAfter(lastId);
-  response.setHeader('content-type', 'application/json');
-  response.end(JSON.stringify(comments));
+  response.json(comments);
 };
 
 const apiRouter = (guestBook) => {
-  return (request, response, next) => {
+  return (request, response) => {
 
     request.guestBook = guestBook;
 
@@ -58,8 +52,13 @@ const apiRouter = (guestBook) => {
     }
 
     serveAllComments(request, response);
-    return;
   };
 };
 
-module.exports = { apiRouter };
+const createApiRouter = (guestBook) => {
+  const apiRoute = express.Router();
+  apiRoute.get('/comments*', apiRouter(guestBook));
+  return apiRoute;
+};
+
+module.exports = { apiRouter, createApiRouter };

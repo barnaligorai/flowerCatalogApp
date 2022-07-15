@@ -33,10 +33,9 @@ const timeStamp = () => {
 
 class GuestBook {
   #comments;
-  #sourceFile;
   #id;
-  constructor(comments, sourceFile, id) {
-    this.#sourceFile = sourceFile;
+
+  constructor(comments, id) {
     this.#comments = comments;
     this.#id = id;
   }
@@ -54,10 +53,6 @@ class GuestBook {
 
   toHtml() {
     return generateCommentsBlock(this.getComments());
-  }
-
-  get sourceFile() {
-    return this.#sourceFile;
   }
 
   get lastId() {

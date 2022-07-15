@@ -3,16 +3,13 @@ const generateGuestBookHtml = (template, guestBook) => {
 };
 
 const guestBookHandler = (guestBook, template) => {
-  return (request, response, next) => {
+  return (request, response) => {
     if (!request.currentSession) {
-      response.statusCode = 302;
-      response.setHeader('location', '/login');
-      response.end('need to login');
+      response.redirect(302, '/login');
       return;
     }
 
     const content = generateGuestBookHtml(template, guestBook);
-    response.statusCode = 200;
     response.setHeader('Content-Type', 'text/html');
     response.end(content);
     return;
