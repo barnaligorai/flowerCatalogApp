@@ -148,24 +148,24 @@ describe('app', () => {
         .expect(200, done);
     });
 
-    it('should send the comments of the provided user for GET /guestbook/comments?name=username when user is logged in', (done) => {
+    it('should send the comments of the provided user for GET /guestbook/comments/name?name=username when user is logged in', (done) => {
       users.push('bani');
       const sessionId = sessions.add('bani');
       const myApp = app(config, sessions, users, mockedLogger);
       request(myApp)
-        .get('/guestbook/comments?name=bani')
+        .get('/guestbook/comments/name/bani')
         .set('Cookie', `sessionId=${sessionId}`)
         .expect('content-type', /json/)
         .expect(/^\[.*\]$/)
         .expect(200, done);
     });
 
-    it('should send the lastId for GET /guestbook/comments?q=last-id when user is logged in', (done) => {
+    it('should send the lastId for GET /guestbook/comments/q/last-id when user is logged in', (done) => {
       users.push('bani');
       const sessionId = sessions.add('bani');
       const myApp = app(config, sessions, users, mockedLogger);
       request(myApp)
-        .get('/guestbook/comments?q=last-id')
+        .get('/guestbook/comments/q/last-id')
         .set('Cookie', `sessionId=${sessionId}`)
         .expect('content-type', /json/)
         .expect(/{"lastId":\d+}/)
@@ -177,7 +177,7 @@ describe('app', () => {
       const sessionId = sessions.add('bani');
       const myApp = app(config, sessions, users, mockedLogger);
       request(myApp)
-        .get('/guestbook/comments?after=1')
+        .get('/guestbook/comments/after/1')
         .set('Cookie', `sessionId=${sessionId}`)
         .expect('content-type', /json/)
         .expect(/^\[.*\]$/)

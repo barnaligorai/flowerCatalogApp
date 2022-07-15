@@ -51,7 +51,7 @@ const postComment = (callback) => {
 };
 
 const fetchComments = (lastId) => {
-  const commentsRequest = { method: 'GET', url: `/guestbook/comments?after=${lastId.lastId}` };
+  const commentsRequest = { method: 'GET', url: `/guestbook/comments/after/${lastId.lastId}` };
   sendRequest(commentsRequest, (xhr) => prependComments(xhr, lastId));
 };
 
@@ -62,7 +62,7 @@ const initPost = ({ response }) => {
 };
 
 const main = () => {
-  const request = { method: 'GET', url: '/guestbook/comments?q=last-id' };
+  const request = { method: 'GET', url: '/guestbook/comments/q/last-id' };
   sendRequest(request, initPost);
 };
 

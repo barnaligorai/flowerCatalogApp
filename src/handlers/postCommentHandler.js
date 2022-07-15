@@ -16,13 +16,6 @@ const updateDatabase = (guestBook, dataFile, fs = fileSystem) => {
 const postCommentHandler = (guestBook, dataFile) =>
   (request, response) => {
 
-    if (!request.currentSession) {
-      response.statusCode = 302;
-      response.location('/login');
-      response.end('need to login first');
-      return;
-    }
-
     request.guestBook = guestBook;
     const comment = addComment(request);
     updateDatabase(guestBook, dataFile);
